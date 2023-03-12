@@ -82,6 +82,7 @@ export class AuthService {
           : this.refreshTokens[this.refreshTokens.length - 1].id + 1,
       ...values,
       userId: user.id,
+      roles: user.roles,
     });
     this.refreshTokens.push(refreshObject);
     return {
@@ -89,6 +90,7 @@ export class AuthService {
       accessToken: sign(
         {
           userId: user.id,
+          roles: user.roles,
         },
         process.env.ACCESS_SECRET,
         {
@@ -107,5 +109,27 @@ export class AuthService {
       (refreshToken) => refreshToken.id !== refreshToken.id,
     );
     return true;
+  }
+
+  async checkUserExists(email: string): Promise<boolean> {
+    const user = await this.usersService.findByEmail(email);
+    return Boolean(user);
+  }
+
+  async register(
+    name: string,
+    email: string,
+    password: string,
+    values: {
+      userAgent: string;
+      ipaddress: string;
+    },
+  ): Promise<{ accessToken: string; refreshToken: string } | undefined> {
+    const user = await this.usersService.create({
+      name,
+      email,
+      password,
+    });
+    return this.createNewRefreshAndAccessToken(user, values);
   }
 }
