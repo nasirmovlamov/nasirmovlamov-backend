@@ -23,6 +23,7 @@ export class AuthService {
 
     const accessToken = {
       userId: user.id,
+      roles: user.roles,
     };
 
     return sign(accessToken, process.env.ACCESS_SECRET, {
@@ -53,20 +54,25 @@ export class AuthService {
       userAgent: string;
       ipaddress: string;
     },
-  ): Promise<{ accessToken: string; refreshToken: string } | undefined> {
-    const user = await this.usersService.findByEmail(email);
+  ): Promise<
+    { accessToken: string; refreshToken: string; user: User } | undefined
+  > {
+    const user = await this.usersService.findByEmailAndGetPassword(email);
     if (!user) {
       return undefined;
     }
     if (user.password !== password) {
       return undefined;
     }
-
-    return this.createNewRefreshAndAccessToken(user, values);
+    const token = await this.createNewRefreshAndAccessToken(user, values);
+    return {
+      ...token,
+      user: user,
+    };
   }
 
   private async createNewRefreshAndAccessToken(
-    user: User,
+    user: Omit<User, 'password'>,
     values: {
       userAgent: string;
       ipaddress: string;
@@ -83,6 +89,7 @@ export class AuthService {
       ...values,
       userId: user.id,
       roles: user.roles,
+      permissions: user.roles.map((role) => role.permissions).flat(),
     });
     this.refreshTokens.push(refreshObject);
     return {
@@ -91,6 +98,7 @@ export class AuthService {
         {
           userId: user.id,
           roles: user.roles,
+          permissions: user.roles.map((role) => role.permissions).flat(),
         },
         process.env.ACCESS_SECRET,
         {
@@ -124,12 +132,30 @@ export class AuthService {
       userAgent: string;
       ipaddress: string;
     },
-  ): Promise<{ accessToken: string; refreshToken: string } | undefined> {
-    const user = await this.usersService.create({
+  ): Promise<
+    | {
+        accessToken: string;
+        refreshToken: string;
+        user: Omit<User, 'password'>;
+      }
+    | undefined
+  > {
+    //create user without password and return it
+    const createdUser = await this.usersService.create({
       name,
       email,
       password,
     });
-    return this.createNewRefreshAndAccessToken(user, values);
+
+    const tokens = await this.createNewRefreshAndAccessToken(
+      createdUser,
+      values,
+    );
+    return {
+      ...tokens,
+      user: {
+        ...createdUser,
+      },
+    };
   }
 }

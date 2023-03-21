@@ -1,6 +1,8 @@
-import { ActionsDefaultData } from './actions.static';
-
-export type PermissionsDefaultType = typeof PermissionsDefaultData;
+import {
+  ActionsDefaultData,
+  ActionsDefaultDataType,
+  ActionsDefaultObjectData,
+} from './actions.static';
 
 export const PermissionsDefaultData = {
   createAny: {
@@ -37,66 +39,73 @@ export const PermissionsDefaultData = {
   },
   createRole: {
     name: 'createRole',
-    actions: [...ActionsDefaultData],
+    actions: [ActionsDefaultObjectData.CREATE],
   },
   readRole: {
     name: 'readRole',
-    actions: [...ActionsDefaultData],
+    actions: [ActionsDefaultObjectData.READ],
   },
   updateRole: {
     name: 'updateRole',
-    actions: [...ActionsDefaultData],
+    actions: [ActionsDefaultObjectData.UPDATE],
   },
   deleteRole: {
     name: 'deleteRole',
-    actions: [...ActionsDefaultData],
+    actions: [ActionsDefaultObjectData.DELETE],
   },
   createPermission: {
     name: 'createPermission',
-    actions: [...ActionsDefaultData],
+    actions: [ActionsDefaultObjectData.CREATE],
   },
   readPermission: {
     name: 'readPermission',
-    actions: [...ActionsDefaultData],
+    actions: [ActionsDefaultObjectData.READ],
   },
   updatePermission: {
     name: 'updatePermission',
-    actions: [...ActionsDefaultData],
+    actions: [ActionsDefaultObjectData.UPDATE],
   },
   deletePermission: {
     name: 'deletePermission',
-    actions: [...ActionsDefaultData],
+    actions: [ActionsDefaultObjectData.DELETE],
   },
   createAction: {
     name: 'createAction',
-    actions: [...ActionsDefaultData],
+    actions: [ActionsDefaultObjectData.CREATE],
   },
   readAction: {
     name: 'readAction',
-    actions: [...ActionsDefaultData],
+    actions: [ActionsDefaultObjectData.READ],
   },
   updateAction: {
     name: 'updateAction',
-    actions: [...ActionsDefaultData],
+    actions: [ActionsDefaultObjectData.UPDATE],
   },
   deleteAction: {
     name: 'deleteAction',
-    actions: [...ActionsDefaultData],
+    actions: [ActionsDefaultObjectData.DELETE],
   },
   createUser: {
     name: 'createUser',
-    actions: [...ActionsDefaultData],
+    actions: [ActionsDefaultObjectData.CREATE],
   },
   readUser: {
     name: 'readUser',
-    actions: [...ActionsDefaultData],
+    actions: [ActionsDefaultObjectData.READ],
   },
   updateUser: {
     name: 'updateUser',
-    actions: [...ActionsDefaultData],
+    actions: [ActionsDefaultObjectData.UPDATE],
   },
   deleteUser: {
     name: 'deleteUser',
-    actions: [...ActionsDefaultData],
+    actions: [ActionsDefaultObjectData.DELETE],
   },
+};
+
+type PermissionName = keyof typeof PermissionsDefaultData;
+type test = keyof typeof ActionsDefaultData;
+export type PermissionType = {
+  name: string;
+  actions: string[];
 };

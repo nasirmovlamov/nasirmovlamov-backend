@@ -35,7 +35,6 @@ async function bootstrap() {
     .get(DataSource)
     .getRepository(Permission)
     .find();
-  console.log('getPermissions', getPermissions);
 
   for (const role in RolesDefaultData) {
     const roleExists = await app
@@ -45,7 +44,6 @@ async function bootstrap() {
   }
 
   const getRoles = await app.get(DataSource).getRepository(Role).find();
-  console.log('getRoles', getRoles);
 
   const userExists = await app.get(DataSource).getRepository(User).save({
     name: 'admin',

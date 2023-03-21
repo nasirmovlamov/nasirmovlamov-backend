@@ -7,7 +7,7 @@ import {
   JoinTable,
 } from 'typeorm';
 
-@Entity('permissions')
+@Entity()
 export class Permission {
   @PrimaryGeneratedColumn()
   id: number;

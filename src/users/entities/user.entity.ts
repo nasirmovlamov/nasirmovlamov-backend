@@ -1,3 +1,4 @@
+import { Permission } from 'src/permissions/entities/permission.entity';
 import { Role } from 'src/roles/entities/role.entity';
 import {
   Entity,
@@ -24,4 +25,6 @@ export class User {
   @ManyToMany(() => Role)
   @JoinTable()
   roles: Role[];
+
+  permissions: Permission[];
 }

@@ -7,7 +7,7 @@ import {
   JoinTable,
 } from 'typeorm';
 
-@Entity('roles')
+@Entity('role')
 export class Role {
   @PrimaryGeneratedColumn()
   id: number;
@@ -15,7 +15,9 @@ export class Role {
   @Column()
   name: string;
 
-  @ManyToMany(() => Permission)
+  @ManyToMany(() => Permission, {
+    cascade: true,
+  })
   @JoinTable()
   permissions: Permission[];
 }

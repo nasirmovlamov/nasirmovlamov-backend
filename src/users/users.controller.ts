@@ -1,4 +1,11 @@
-import { Controller, Delete, Get, Req, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Delete,
+  Get,
+  NotFoundException,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { PermissionGuard } from 'src/auth/guards/permission.guard';
@@ -24,15 +31,25 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Get(':id')
   async findOne(@Req() request) {
-    const userId = request.user.userId;
-    return this.usersService.findOne(userId);
+    const id = request.params.id;
+    return this.usersService.findOne(id);
   }
 
   @UseGuards(JwtAuthGuard)
-  @UseGuards(PermissionGuard())
+  @UseGuards(PermissionGuard([PermissionsDefaultData.deleteUser]))
   @Delete(':id')
   async remove(@Req() request) {
-    const userId = request.user.userId;
-    return this.usersService.remove(userId);
+    const id = request.params.id;
+    console.log(id);
+    if (id == 1) {
+      throw new NotFoundException('Admin can not be deleted');
+    }
+    const removedUser = await this.usersService.remove(id);
+    if (removedUser) {
+      return {
+        message: 'User removed',
+      };
+    }
+    return undefined;
   }
 }

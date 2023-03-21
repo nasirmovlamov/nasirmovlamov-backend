@@ -11,8 +11,14 @@ import { PermissionsModule } from './permissions/permissions.module';
 import { ActionsModule } from './actions/actions.module';
 import { Permission } from './permissions/entities/permission.entity';
 import { Role } from './roles/entities/role.entity';
+import { Tag } from './tags/entities/tag.entity';
+import { Category } from './categories/entities/category.entity';
+import { Blog } from './blogs/entities/blog.entity';
 import { DataSource } from 'typeorm';
 import { Action } from './actions/entities/action.entity';
+import { BlogsModule } from './blogs/blogs.module';
+import { TagsModule } from './tags/tags.module';
+import { CategoriesModule } from './categories/categories.module';
 
 @Module({
   imports: [
@@ -23,7 +29,7 @@ import { Action } from './actions/entities/action.entity';
       username: 'postgres',
       password: 'mysecretpassword',
       database: 'postgres',
-      entities: [Action, Permission, Role, User],
+      entities: [Tag, Category, Blog, Action, Permission, Role, User],
       synchronize: true,
       dropSchema: true,
     }),
@@ -33,6 +39,9 @@ import { Action } from './actions/entities/action.entity';
     RolesModule,
     PermissionsModule,
     ActionsModule,
+    BlogsModule,
+    TagsModule,
+    CategoriesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

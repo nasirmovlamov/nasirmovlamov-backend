@@ -16,7 +16,6 @@
 //           ) as Jwt)
 //         : null;
 //       //get user from jwt
-//       console.log(jwt);
 //       const user = jwt as any as User;
 
 //       //check if user has role

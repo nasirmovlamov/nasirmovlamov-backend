@@ -1,26 +1,48 @@
 import { Injectable } from '@nestjs/common';
 import { CreatePermissionDto } from './dto/create-permission.dto';
 import { UpdatePermissionDto } from './dto/update-permission.dto';
+import { Permission } from './entities/permission.entity';
+import { create } from 'domain';
+import { DeleteResult, In, Repository, UpdateResult } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { async } from 'rxjs';
 
 @Injectable()
 export class PermissionsService {
-  create(createPermissionDto: CreatePermissionDto) {
-    return 'This action adds a new permission';
+  constructor(
+    @InjectRepository(Permission)
+    private permissionsRepository: Repository<Permission>,
+  ) {}
+
+  async create(createPermissionDto: CreatePermissionDto): Promise<Permission> {
+    const newPermission = await this.permissionsRepository.create(
+      createPermissionDto,
+    );
+    return await this.permissionsRepository.save(newPermission);
   }
 
-  findAll() {
-    return `This action returns all permissions`;
+  async findAll(): Promise<Permission[]> {
+    return await this.permissionsRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} permission`;
+  async findOne(id: number): Promise<Permission> {
+    return await this.permissionsRepository.findOne({
+      where: { id },
+    });
   }
 
-  update(id: number, updatePermissionDto: UpdatePermissionDto) {
-    return `This action updates a #${id} permission`;
+  async findWithIds(ids: Permission[]): Promise<Permission[]> {
+    return await this.permissionsRepository.findBy({ id: In([...ids]) });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} permission`;
+  async update(
+    id: number,
+    updatePermissionDto: UpdatePermissionDto,
+  ): Promise<UpdateResult> {
+    return await this.permissionsRepository.update(id, updatePermissionDto);
+  }
+
+  async remove(id: number): Promise<DeleteResult> {
+    return this.permissionsRepository.delete(id);
   }
 }

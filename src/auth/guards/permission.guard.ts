@@ -3,44 +3,30 @@ import { CanActivate, ExecutionContext, mixin, Type } from '@nestjs/common';
 import { Jwt } from 'jsonwebtoken';
 import { Request } from 'express';
 import { Permission } from 'src/permissions/entities/permission.entity';
-
-export const PermissionGuard = (): Type<CanActivate> => {
+import { verify } from 'jsonwebtoken';
+import { PermissionType } from 'src/static/permissions.static';
+export const PermissionGuard = (
+  guardPermissions: PermissionType[],
+): Type<CanActivate> => {
   class PermissionGuardMixin implements CanActivate {
     canActivate(context: ExecutionContext) {
-      //get jwt from request
       const request = context.switchToHttp().getRequest<Request>();
       const token = request.headers?.authorization?.replace('Bearer ', '');
-      const jwt = token
-        ? (JSON.parse(
-            Buffer.from(token.split('.')[1], 'base64').toString(),
-          ) as Jwt)
-        : null;
-      //get user from jwt
-      const user = jwt as any as User;
-      console.log(user);
+      const decodedJwt = verify(token, process.env.ACCESS_SECRET) as {
+        userId: string;
+        roles: string[];
+        permissions: Permission[];
+      };
+      const userPermissions = decodedJwt.permissions as Permission[];
+      const userPermissionsNames = userPermissions.map(
+        (permission) => permission.name,
+      );
+      const hasPermission = guardPermissions.every((permission) =>
+        userPermissionsNames.includes(permission.name),
+      );
+      console.log('hasPermission', hasPermission);
 
-      //check if user has role
-      // if (user?.roles?.some((r) => r.id === role.id)) {
-      //   return true;
-      // }
-      // //check if user has permission
-      // else if (
-      //   user?.roles?.some((r) => r.permissions?.some((p) => p.id === role.id))
-      // ) {
-      //   return true;
-      // }
-      // //check if user has action
-      // else if (
-      //   user?.roles?.some((r) =>
-      //     r.permissions?.some((p) => p.actions?.some((a) => a.id === role.id)),
-      //   )
-      // ) {
-      //   return true;
-      // }
-
-      if (!token) {
-        return false;
-      }
+      return hasPermission;
     }
   }
 
