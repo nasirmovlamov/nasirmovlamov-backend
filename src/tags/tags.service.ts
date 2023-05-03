@@ -13,7 +13,8 @@ export class TagsService {
   ) {}
 
   async create(createTagDto: CreateTagDto): Promise<Tag> {
-    return await this.tagsRepository.create(createTagDto);
+    const newTag = await this.tagsRepository.create(createTagDto);
+    return await this.tagsRepository.save(newTag);
   }
 
   async findAll(): Promise<Tag[]> {

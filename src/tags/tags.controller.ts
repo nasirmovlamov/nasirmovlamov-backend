@@ -38,6 +38,7 @@ export class TagsController {
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateTagDto: UpdateTagDto) {
+    console.log(id);
     return this.tagsService.update(+id, updateTagDto);
   }
 

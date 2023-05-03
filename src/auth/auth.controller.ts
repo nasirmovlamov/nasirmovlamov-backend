@@ -27,7 +27,6 @@ export class AuthController {
 
   @Post('register')
   async register(@Req() request, @Ip() ip: string, @Body() body: RegisterDto) {
-    // console.log(await this.authService.checkUserExists(body.email));
     // if (!(await this.authService.checkUserExists(body.email))) {
     // send error message
     // return 'User already exists';

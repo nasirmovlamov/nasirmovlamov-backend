@@ -5,14 +5,17 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { Blog } from './entities/blog.entity';
 import { mkdir, writeFile } from 'fs/promises';
-import path, { join } from 'path';
-import { PDFDocument } from 'pdf-lib';
+import { join } from 'path';
+import { CategoryService } from 'src/categories/categories.service';
+import { TagsService } from 'src/tags/tags.service';
 
 @Injectable()
 export class BlogsService {
   constructor(
     @InjectRepository(Blog)
     private blogsRepository: Repository<Blog>,
+    private categoriesService: CategoryService,
+    private tagsService: TagsService,
   ) {}
 
   async create(createBlogDto: CreateBlogDto): Promise<Blog> {
@@ -31,13 +34,15 @@ export class BlogsService {
     // Create the uploads directory if it does not exist
     const uploadsDir = join(__dirname, '..', 'uploads');
     await mkdir(uploadsDir, { recursive: true });
-
     await writeFile(filePath, Buffer.from(base64Data, 'base64'));
+
+    const allCategories = await this.categoriesService.findAll();
+    const allTags = await this.tagsService.findAll();
     const createdBlog = await this.blogsRepository.create({
       title: createBlogDto.title,
       description: createBlogDto.description,
-      categories: createBlogDto.categories,
-      tags: createBlogDto.tags,
+      categories: allCategories,
+      tags: allTags,
       file_path: filePath,
     });
 

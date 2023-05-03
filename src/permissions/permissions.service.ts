@@ -5,7 +5,6 @@ import { Permission } from './entities/permission.entity';
 import { create } from 'domain';
 import { DeleteResult, In, Repository, UpdateResult } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { async } from 'rxjs';
 
 @Injectable()
 export class PermissionsService {
@@ -43,6 +42,6 @@ export class PermissionsService {
   }
 
   async remove(id: number): Promise<DeleteResult> {
-    return this.permissionsRepository.delete(id);
+    return await this.permissionsRepository.delete(id);
   }
 }

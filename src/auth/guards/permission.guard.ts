@@ -24,7 +24,6 @@ export const PermissionGuard = (
       const hasPermission = guardPermissions.every((permission) =>
         userPermissionsNames.includes(permission.name),
       );
-      console.log('hasPermission', hasPermission);
 
       return hasPermission;
     }

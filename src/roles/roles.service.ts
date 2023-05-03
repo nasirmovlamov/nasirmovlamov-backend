@@ -3,7 +3,7 @@ import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Role } from './entities/role.entity';
-import { DeleteResult, Repository, UpdateResult } from 'typeorm';
+import { DeleteResult, In, Repository, UpdateResult } from 'typeorm';
 import { PermissionsService } from 'src/permissions/permissions.service';
 
 @Injectable()
@@ -36,6 +36,10 @@ export class RolesService {
       where: { id },
       relations: ['permissions'],
     });
+  }
+
+  async findWithIds(ids: Role[]): Promise<Role[]> {
+    return await this.rolesRepository.findBy({ id: In([...ids]) });
   }
 
   async update(id: number, updateRoleDto: UpdateRoleDto): Promise<any> {

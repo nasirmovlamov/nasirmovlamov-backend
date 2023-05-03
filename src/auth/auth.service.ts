@@ -55,7 +55,12 @@ export class AuthService {
       ipaddress: string;
     },
   ): Promise<
-    { accessToken: string; refreshToken: string; user: User } | undefined
+    | {
+        accessToken: string;
+        refreshToken: string;
+        user: Omit<User, 'password'>;
+      }
+    | undefined
   > {
     const user = await this.usersService.findByEmailAndGetPassword(email);
     if (!user) {
@@ -67,7 +72,13 @@ export class AuthService {
     const token = await this.createNewRefreshAndAccessToken(user, values);
     return {
       ...token,
-      user: user,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        roles: user.roles,
+        permissions: user.permissions,
+      },
     };
   }
 
@@ -145,6 +156,7 @@ export class AuthService {
       name,
       email,
       password,
+      roles: [],
     });
 
     const tokens = await this.createNewRefreshAndAccessToken(
