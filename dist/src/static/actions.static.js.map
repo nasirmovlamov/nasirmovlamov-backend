@@ -1,0 +1,1 @@
+{"version":3,"file":"actions.static.js","sourceRoot":"","sources":["../../../src/static/actions.static.ts"],"names":[],"mappings":";;;AAAa,QAAA,kBAAkB,GAAG,CAAC,QAAQ,EAAE,MAAM,EAAE,QAAQ,EAAE,QAAQ,CAAC,CAAC;AAC5D,QAAA,wBAAwB,GAAG;IACtC,MAAM,EAAE,QAAQ;IAChB,IAAI,EAAE,MAAM;IACZ,MAAM,EAAE,QAAQ;IAChB,MAAM,EAAE,QAAQ;CACjB,CAAC"}

@@ -1,0 +1,1 @@
+{"version":3,"file":"refresh-token.entity.js","sourceRoot":"","sources":["../../../../src/auth/entity/refresh-token.entity.ts"],"names":[],"mappings":";;AAAA,+CAAoC;AAIpC,MAAM,YAAY;IAChB,YAAY,IAA2B;QACrC,MAAM,CAAC,MAAM,CAAC,IAAI,EAAE,IAAI,CAAC,CAAC;IAC5B,CAAC;IASD,IAAI;QACF,OAAO,IAAA,mBAAI,oBAAM,IAAI,GAAI,OAAO,CAAC,GAAG,CAAC,cAAc,CAAC,CAAC;IACvD,CAAC;CACF;AAED,kBAAe,YAAY,CAAC"}
