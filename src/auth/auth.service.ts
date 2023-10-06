@@ -78,6 +78,7 @@ export class AuthService {
         email: user.email,
         roles: user.roles,
         permissions: user.permissions,
+        tasks: user.tasks,
       },
     };
   }

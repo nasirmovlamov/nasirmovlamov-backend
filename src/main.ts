@@ -8,9 +8,20 @@ import { Action } from './actions/entities/action.entity';
 import { PermissionsDefaultData } from './static/permissions.static';
 import { Role } from './roles/entities/role.entity';
 import { RolesDefaultData } from './static/roles.static';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  // add swagger
+  const config = new DocumentBuilder()
+    .setTitle('Cats example')
+    .setDescription('The cats API description')
+    .setVersion('1.0')
+    .addTag('cats')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
 
   // create actions on startup
   // all actions are created on startup

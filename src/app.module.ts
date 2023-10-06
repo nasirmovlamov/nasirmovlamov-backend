@@ -12,34 +12,35 @@ import { ActionsModule } from './actions/actions.module';
 import { Permission } from './permissions/entities/permission.entity';
 import { Role } from './roles/entities/role.entity';
 import { Tag } from './tags/entities/tag.entity';
-import { Category } from './categories/entities/category.entity';
+import { Task } from './tasks/entities/task.entity';
 import { Blog } from './blogs/entities/blog.entity';
 import { DataSource } from 'typeorm';
 import { Action } from './actions/entities/action.entity';
 import { BlogsModule } from './blogs/blogs.module';
 import { TagsModule } from './tags/tags.module';
-import { CategoriesModule } from './categories/categories.module';
+import { TasksModule } from './tasks/task.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      // type: 'postgres',
-      // host: 'localhost',
-      // port: 5432,
-      // username: 'postgres',
-      // password: 'mysecretpassword',
-      // database: 'postgres',
-      // entities: [Tag, Category, Blog, Action, Permission, Role, User],
+      // connectString: 'postgres://postgres:postgrespw@localhost:32768',
+      type: 'postgres',
+      host: 'localhost',
+      port: 5432,
+      username: 'postgres',
+      password: 'mysecretpassword',
+      database: 'postgres',
+      // entities: [Tag, Task, Blog, Action, Permission, Role, User],
       // synchronize: true,
       // dropSchema: true,
       // url: 'postgres://dtugdfdr:3wFsVVYW_bHokKTTzHKtN53KqdM2wGeX@hattie.db.elephantsql.com/dtugdfdr',
-      type: 'postgres',
-      host: 'hattie.db.elephantsql.com',
-      port: 5432,
-      database: 'dtugdfdr',
-      username: 'dtugdfdr',
-      password: '3wFsVVYW_bHokKTTzHKtN53KqdM2wGeX',
-      entities: [Tag, Category, Blog, Action, Permission, Role, User],
+      // type: 'postgres',
+      // host: 'hattie.db.elephantsql.com',
+      // port: 5432,
+      // database: 'dtugdfdr',
+      // username: 'dtugdfdr',
+      // password: '3wFsVVYW_bHokKTTzHKtN53KqdM2wGeX',
+      entities: [Tag, Action, Permission, Role, User, Task],
       synchronize: true,
       logging: false,
     }),
@@ -51,7 +52,7 @@ import { CategoriesModule } from './categories/categories.module';
     ActionsModule,
     BlogsModule,
     TagsModule,
-    CategoriesModule,
+    TasksModule,
   ],
   controllers: [AppController],
   providers: [AppService],

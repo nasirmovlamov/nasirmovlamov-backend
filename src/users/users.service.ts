@@ -51,7 +51,7 @@ export class UsersService {
     return await this.usersRepository.findOne({
       where: { id },
       select: ['id', 'name', 'email'],
-      relations: ['roles', 'roles.permissions'],
+      relations: ['roles', 'roles.permissions', 'tasks'],
     });
   }
 
@@ -86,6 +86,7 @@ export class UsersService {
       email: userWithRoles.email,
       roles: userWithRoles.roles,
       permissions: userWithRoles.roles.map((item) => item.permissions).flat(),
+      tasks: userWithRoles.tasks,
     };
   }
 
